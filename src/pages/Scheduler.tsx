@@ -514,17 +514,17 @@ export default function Scheduler() {
           </Button>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-6">
+        <div className={`grid gap-6 ${showTodos ? 'lg:grid-cols-5' : 'lg:grid-cols-4'}`}>
           {/* Todo List Sidebar */}
           {showTodos && (
-            <div className="lg:col-span-1 lg:row-span-2">
-              <Card className="h-[800px]">
+            <div className="lg:col-span-1">
+              <Card className="sticky top-6 h-[calc(100vh-120px)]">
                 <TodoList todaySubjects={getTodaySubjects()} subjects={allSubjects} />
               </Card>
             </div>
           )}
           {/* Input Form */}
-          <div className={showTodos ? "lg:col-span-1 space-y-6" : "lg:col-span-1 space-y-6"}>
+          <div className="lg:col-span-1 space-y-6">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -649,7 +649,7 @@ export default function Scheduler() {
           </div>
 
           {/* Schedule Output */}
-          <div className={showTodos ? "lg:col-span-2" : "lg:col-span-2"}>
+          <div className="lg:col-span-2">
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
