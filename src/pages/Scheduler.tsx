@@ -508,10 +508,16 @@ export default function Scheduler() {
               Generate optimized study timetables based on subject difficulty and available time
             </p>
           </div>
-          <Button onClick={() => setShowTodos(!showTodos)} variant="outline" className="gap-2">
-            <ListTodo className="h-5 w-5" />
-            {showTodos ? 'Hide' : 'Show'} Tasks
-          </Button>
+          <div className="flex gap-2">
+            <Button onClick={() => {/* TODO: Show schedule history */}} variant="outline" className="gap-2">
+              <History className="h-5 w-5" />
+              Schedule History ({schedulePlans.length})
+            </Button>
+            <Button onClick={() => setShowTodos(!showTodos)} variant="outline" className="gap-2">
+              <ListTodo className="h-5 w-5" />
+              {showTodos ? 'Hide' : 'Show'} Tasks
+            </Button>
+          </div>
         </div>
 
         <div className="grid lg:grid-cols-4 gap-6">
