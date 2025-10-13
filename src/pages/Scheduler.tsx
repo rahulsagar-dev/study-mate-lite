@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, Clock, Plus, Download, Save, Trash2, GraduationCap, History, FileDown, Copy, Eye, X, Settings, BarChart3, AlertCircle } from 'lucide-react';
+import { Calendar, Clock, Plus, Download, Save, Trash2, GraduationCap, History, FileDown, Copy, Eye, X, Settings, BarChart3, AlertCircle, ListTodo } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -12,6 +12,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
+import { TodoList } from '@/components/TodoList';
 
 interface Subject {
   id: string;
@@ -87,7 +88,17 @@ export default function Scheduler() {
   const [schedulePlans, setSchedulePlans] = useState<SchedulePlan[]>([]);
   const [stats, setStats] = useState<StudyStats | null>(null);
   const [error, setError] = useState<string>('');
+  const [showTodos, setShowTodos] = useState(false);
   const { toast } = useToast();
+
+  // Get today's subjects from schedule
+  const getTodaySubjects = (): string[] => {
+    const today = weekDays[new Date().getDay() === 0 ? 6 : new Date().getDay() - 1];
+    const todaySchedule = schedule.filter(slot => slot.day === today);
+    return [...new Set(todaySchedule.map(slot => slot.subject))];
+  };
+
+  const allSubjects = subjects.map(s => s.name);
 
   // Load saved plans from localStorage
   useEffect(() => {
@@ -486,20 +497,34 @@ export default function Scheduler() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="mb-8">
-          <h1 className="text-3xl lg:text-4xl font-bold mb-2">
-            <span className="bg-gradient-primary bg-clip-text text-transparent">
-              AI Study Scheduler
-            </span>
-          </h1>
-          <p className="text-muted-foreground">
-            Generate optimized study timetables based on subject difficulty and available time
-          </p>
+        <div className="mb-8 flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl lg:text-4xl font-bold mb-2">
+              <span className="bg-gradient-primary bg-clip-text text-transparent">
+                AI Study Scheduler
+              </span>
+            </h1>
+            <p className="text-muted-foreground">
+              Generate optimized study timetables based on subject difficulty and available time
+            </p>
+          </div>
+          <Button onClick={() => setShowTodos(!showTodos)} variant="outline" className="gap-2">
+            <ListTodo className="h-5 w-5" />
+            {showTodos ? 'Hide' : 'Show'} Tasks
+          </Button>
         </div>
 
         <div className="grid lg:grid-cols-4 gap-6">
+          {/* Todo List Sidebar */}
+          {showTodos && (
+            <div className="lg:col-span-1 lg:row-span-2">
+              <Card className="h-[800px]">
+                <TodoList todaySubjects={getTodaySubjects()} subjects={allSubjects} />
+              </Card>
+            </div>
+          )}
           {/* Input Form */}
-          <div className="lg:col-span-1 space-y-6">
+          <div className={showTodos ? "lg:col-span-1 space-y-6" : "lg:col-span-1 space-y-6"}>
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -624,7 +649,7 @@ export default function Scheduler() {
           </div>
 
           {/* Schedule Output */}
-          <div className="lg:col-span-2">
+          <div className={showTodos ? "lg:col-span-2" : "lg:col-span-2"}>
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
