@@ -89,6 +89,7 @@ export default function Scheduler() {
   const [stats, setStats] = useState<StudyStats | null>(null);
   const [error, setError] = useState<string>('');
   const [showTodos, setShowTodos] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
   const { toast } = useToast();
 
   // Get today's subjects from schedule
@@ -509,7 +510,7 @@ export default function Scheduler() {
             </p>
           </div>
           <div className="flex gap-2">
-            <Button onClick={() => {/* TODO: Show schedule history */}} variant="outline" className="gap-2">
+            <Button onClick={() => setShowHistory(true)} variant="outline" className="gap-2">
               <History className="h-5 w-5" />
               Schedule History ({schedulePlans.length})
             </Button>
@@ -783,13 +784,7 @@ export default function Scheduler() {
             )}
 
             {/* History Drawer */}
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" className="w-full">
-                  <History className="h-4 w-4 mr-2" />
-                  Schedule History ({schedulePlans.length})
-                </Button>
-              </SheetTrigger>
+            <Sheet open={showHistory} onOpenChange={setShowHistory}>
               <SheetContent className="w-full sm:max-w-md">
                 <SheetHeader>
                   <SheetTitle>Schedule History</SheetTitle>
