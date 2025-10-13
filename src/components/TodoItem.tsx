@@ -85,12 +85,11 @@ export const TodoItem = ({ todo, onToggle, onUpdate, onDelete, subjects, dragHan
               </SelectContent>
             </Select>
 
-            <Select value={subject} onValueChange={setSubject}>
+            <Select value={subject || undefined} onValueChange={setSubject}>
               <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Subject" />
+                <SelectValue placeholder="No subject" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">None</SelectItem>
                 {subjects.map((s) => (
                   <SelectItem key={s} value={s}>{s}</SelectItem>
                 ))}
