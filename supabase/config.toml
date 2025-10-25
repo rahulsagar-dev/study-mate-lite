@@ -1,1 +1,10 @@
 project_id = "utcgutjzynbaxojtqgqc"
+
+[functions.generate-flashcards]
+verify_jwt = true
+
+[functions.generate-summary]
+verify_jwt = true
+
+[functions.parse-document]
+verify_jwt = true
