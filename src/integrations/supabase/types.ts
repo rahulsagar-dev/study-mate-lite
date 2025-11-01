@@ -187,6 +187,87 @@ export type Database = {
         }
         Relationships: []
       }
+      pomodoro_sessions: {
+        Row: {
+          break_duration: number | null
+          completed_sessions: number
+          created_at: string
+          date: string
+          end_time: string | null
+          id: string
+          session_type: Database["public"]["Enums"]["session_type"]
+          start_time: string
+          subject: string | null
+          user_id: string
+          work_duration: number
+        }
+        Insert: {
+          break_duration?: number | null
+          completed_sessions?: number
+          created_at?: string
+          date?: string
+          end_time?: string | null
+          id?: string
+          session_type: Database["public"]["Enums"]["session_type"]
+          start_time: string
+          subject?: string | null
+          user_id: string
+          work_duration: number
+        }
+        Update: {
+          break_duration?: number | null
+          completed_sessions?: number
+          created_at?: string
+          date?: string
+          end_time?: string | null
+          id?: string
+          session_type?: Database["public"]["Enums"]["session_type"]
+          start_time?: string
+          subject?: string | null
+          user_id?: string
+          work_duration?: number
+        }
+        Relationships: []
+      }
+      pomodoro_settings: {
+        Row: {
+          auto_start_breaks: boolean | null
+          auto_start_pomodoros: boolean | null
+          created_at: string
+          id: string
+          long_break_duration: number
+          short_break_duration: number
+          sound_enabled: boolean | null
+          updated_at: string
+          user_id: string
+          work_duration: number
+        }
+        Insert: {
+          auto_start_breaks?: boolean | null
+          auto_start_pomodoros?: boolean | null
+          created_at?: string
+          id?: string
+          long_break_duration?: number
+          short_break_duration?: number
+          sound_enabled?: boolean | null
+          updated_at?: string
+          user_id: string
+          work_duration?: number
+        }
+        Update: {
+          auto_start_breaks?: boolean | null
+          auto_start_pomodoros?: boolean | null
+          created_at?: string
+          id?: string
+          long_break_duration?: number
+          short_break_duration?: number
+          sound_enabled?: boolean | null
+          updated_at?: string
+          user_id?: string
+          work_duration?: number
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -198,6 +279,8 @@ export type Database = {
           joined_date: string | null
           last_activity_date: string | null
           study_streak: number | null
+          total_focus_hours: number | null
+          total_pomodoro_sessions: number | null
           total_study_hours: number | null
           updated_at: string
           user_id: string
@@ -212,6 +295,8 @@ export type Database = {
           joined_date?: string | null
           last_activity_date?: string | null
           study_streak?: number | null
+          total_focus_hours?: number | null
+          total_pomodoro_sessions?: number | null
           total_study_hours?: number | null
           updated_at?: string
           user_id: string
@@ -226,6 +311,8 @@ export type Database = {
           joined_date?: string | null
           last_activity_date?: string | null
           study_streak?: number | null
+          total_focus_hours?: number | null
+          total_pomodoro_sessions?: number | null
           total_study_hours?: number | null
           updated_at?: string
           user_id?: string
@@ -335,6 +422,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      session_type: "work" | "short_break" | "long_break"
       task_priority: "high" | "medium" | "low"
     }
     CompositeTypes: {
@@ -463,6 +551,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      session_type: ["work", "short_break", "long_break"],
       task_priority: ["high", "medium", "low"],
     },
   },
