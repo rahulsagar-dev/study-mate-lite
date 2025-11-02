@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -115,7 +116,7 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[10000] flex items-center justify-center p-4"
+      className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
       onClick={onClose}
     >
       <motion.div
@@ -123,82 +124,84 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[90vh] overflow-auto"
+        className="w-full max-w-md"
       >
-        <Card className="w-full max-w-md p-6 space-y-6 max-h-[85vh] overflow-y-auto">
-          <div className="flex items-center justify-between">
+        <Card className="w-full">
+          <div className="flex items-center justify-between p-6 pb-4">
             <h2 className="text-2xl font-bold">Pomodoro Settings</h2>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-5 w-5" />
             </Button>
           </div>
 
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="work-duration">Work Duration (minutes)</Label>
-              <Input
-                id="work-duration"
-                type="number"
-                min="1"
-                max="60"
-                value={workDuration}
-                onChange={(e) => setWorkDuration(Number(e.target.value))}
-              />
-            </div>
+          <ScrollArea className="max-h-[60vh] px-6">
+            <div className="space-y-4 pb-4">
+              <div className="space-y-2">
+                <Label htmlFor="work-duration">Work Duration (minutes)</Label>
+                <Input
+                  id="work-duration"
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={workDuration}
+                  onChange={(e) => setWorkDuration(Number(e.target.value))}
+                />
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="short-break">Short Break (minutes)</Label>
-              <Input
-                id="short-break"
-                type="number"
-                min="1"
-                max="30"
-                value={shortBreak}
-                onChange={(e) => setShortBreak(Number(e.target.value))}
-              />
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="short-break">Short Break (minutes)</Label>
+                <Input
+                  id="short-break"
+                  type="number"
+                  min="1"
+                  max="30"
+                  value={shortBreak}
+                  onChange={(e) => setShortBreak(Number(e.target.value))}
+                />
+              </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="long-break">Long Break (minutes)</Label>
-              <Input
-                id="long-break"
-                type="number"
-                min="1"
-                max="60"
-                value={longBreak}
-                onChange={(e) => setLongBreak(Number(e.target.value))}
-              />
-            </div>
+              <div className="space-y-2">
+                <Label htmlFor="long-break">Long Break (minutes)</Label>
+                <Input
+                  id="long-break"
+                  type="number"
+                  min="1"
+                  max="60"
+                  value={longBreak}
+                  onChange={(e) => setLongBreak(Number(e.target.value))}
+                />
+              </div>
 
-            <div className="flex items-center justify-between">
-              <Label htmlFor="auto-breaks">Auto-start Breaks</Label>
-              <Switch
-                id="auto-breaks"
-                checked={autoStartBreaks}
-                onCheckedChange={setAutoStartBreaks}
-              />
-            </div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="auto-breaks">Auto-start Breaks</Label>
+                <Switch
+                  id="auto-breaks"
+                  checked={autoStartBreaks}
+                  onCheckedChange={setAutoStartBreaks}
+                />
+              </div>
 
-            <div className="flex items-center justify-between">
-              <Label htmlFor="auto-pomodoros">Auto-start Pomodoros</Label>
-              <Switch
-                id="auto-pomodoros"
-                checked={autoStartPomodoros}
-                onCheckedChange={setAutoStartPomodoros}
-              />
-            </div>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="auto-pomodoros">Auto-start Pomodoros</Label>
+                <Switch
+                  id="auto-pomodoros"
+                  checked={autoStartPomodoros}
+                  onCheckedChange={setAutoStartPomodoros}
+                />
+              </div>
 
-            <div className="flex items-center justify-between">
-              <Label htmlFor="sound">Sound Notifications</Label>
-              <Switch
-                id="sound"
-                checked={soundEnabled}
-                onCheckedChange={setSoundEnabled}
-              />
+              <div className="flex items-center justify-between">
+                <Label htmlFor="sound">Sound Notifications</Label>
+                <Switch
+                  id="sound"
+                  checked={soundEnabled}
+                  onCheckedChange={setSoundEnabled}
+                />
+              </div>
             </div>
-          </div>
+          </ScrollArea>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 p-6 pt-4">
             <Button variant="outline" className="flex-1" onClick={onClose}>
               Cancel
             </Button>
