@@ -115,7 +115,7 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[10000] flex items-center justify-center p-4"
+      className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[10000] flex items-center justify-center p-4 overflow-y-auto"
       onClick={onClose}
     >
       <motion.div
@@ -123,9 +123,9 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[90vh] overflow-auto"
+        className="w-full max-w-md my-auto"
       >
-        <Card className="w-full max-w-md p-6 space-y-6 max-h-[85vh] overflow-y-auto">
+        <Card className="w-full p-6 space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">Pomodoro Settings</h2>
             <Button variant="ghost" size="icon" onClick={onClose}>
