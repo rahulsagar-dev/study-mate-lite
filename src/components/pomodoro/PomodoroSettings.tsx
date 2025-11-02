@@ -6,7 +6,6 @@ import { Card } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -126,15 +125,15 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
         onClick={(e) => e.stopPropagation()}
         className="w-full max-w-md"
       >
-        <Card className="w-full">
-          <div className="flex items-center justify-between p-6 pb-4">
+        <Card className="w-full max-h-[85vh] flex flex-col">
+          <div className="flex items-center justify-between p-6 pb-4 shrink-0">
             <h2 className="text-2xl font-bold">Pomodoro Settings</h2>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-5 w-5" />
             </Button>
           </div>
 
-          <ScrollArea className="max-h-[60vh] px-6">
+          <div className="overflow-y-auto px-6 flex-1">
             <div className="space-y-4 pb-4">
               <div className="space-y-2">
                 <Label htmlFor="work-duration">Work Duration (minutes)</Label>
@@ -199,9 +198,9 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
                 />
               </div>
             </div>
-          </ScrollArea>
+          </div>
 
-          <div className="flex gap-2 p-6 pt-4">
+          <div className="flex gap-2 p-6 pt-4 shrink-0 border-t">
             <Button variant="outline" className="flex-1" onClick={onClose}>
               Cancel
             </Button>
