@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Upload, Calendar, BookOpen, Brain, FileText, Flame } from "lucide-react";
+import { Upload, Calendar, BookOpen, Brain, FileText, Flame, Timer, TrendingUp } from "lucide-react";
 import { format } from "date-fns";
 
 interface ProfileData {
@@ -19,6 +19,8 @@ interface ProfileData {
   study_streak: number;
   favorite_subjects: string[];
   joined_date: string;
+  total_pomodoro_sessions: number;
+  total_focus_hours: number;
 }
 
 export default function Profile() {
@@ -55,6 +57,8 @@ export default function Profile() {
           Array.isArray(data.favorite_subjects) 
             ? data.favorite_subjects.filter((s): s is string => typeof s === 'string')
             : [],
+        total_pomodoro_sessions: (data as any).total_pomodoro_sessions || 0,
+        total_focus_hours: (data as any).total_focus_hours || 0,
       };
 
       setProfile(profileData);
@@ -262,7 +266,29 @@ export default function Profile() {
         </Card>
 
         {/* Stats Section */}
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Pomodoro Sessions</CardTitle>
+              <Timer className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{profile.total_pomodoro_sessions || 0}</div>
+              <p className="text-xs text-muted-foreground">Completed sessions</p>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Focus Hours</CardTitle>
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{Number(profile.total_focus_hours || 0).toFixed(1)}h</div>
+              <p className="text-xs text-muted-foreground">Total focused time</p>
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Study Hours</CardTitle>
