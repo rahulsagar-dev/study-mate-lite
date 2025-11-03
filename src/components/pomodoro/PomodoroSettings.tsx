@@ -123,17 +123,17 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[90vh] overflow-auto"
+        className="w-[380px] max-w-[90%]"
       >
-        <Card className="w-full max-w-md p-6 space-y-6 max-h-[85vh] overflow-y-auto">
-          <div className="flex items-center justify-between">
+        <Card className="flex flex-col max-h-[90vh] shadow-lg">
+          <div className="flex items-center justify-between p-6 pb-4 shrink-0">
             <h2 className="text-2xl font-bold">Pomodoro Settings</h2>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-5 w-5" />
             </Button>
           </div>
 
-          <div className="space-y-4">
+          <div className="overflow-y-auto flex-1 px-6 space-y-4">
             <div className="space-y-2">
               <Label htmlFor="work-duration">Work Duration (minutes)</Label>
               <Input
@@ -170,7 +170,7 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
               />
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between py-2">
               <Label htmlFor="auto-breaks">Auto-start Breaks</Label>
               <Switch
                 id="auto-breaks"
@@ -179,7 +179,7 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
               />
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between py-2">
               <Label htmlFor="auto-pomodoros">Auto-start Pomodoros</Label>
               <Switch
                 id="auto-pomodoros"
@@ -188,7 +188,7 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
               />
             </div>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between py-2">
               <Label htmlFor="sound">Sound Notifications</Label>
               <Switch
                 id="sound"
@@ -198,7 +198,7 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
             </div>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 p-6 pt-4 border-t shrink-0">
             <Button variant="outline" className="flex-1" onClick={onClose}>
               Cancel
             </Button>
