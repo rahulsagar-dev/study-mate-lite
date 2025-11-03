@@ -5,8 +5,6 @@ import { Moon, Sun, Menu, X, BookOpen, LogOut, User } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { PomodoroButton } from '@/components/pomodoro/PomodoroButton';
-import { PomodoroWidget } from '@/components/pomodoro/PomodoroWidget';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,7 +23,6 @@ const navigation = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [showPomodoro, setShowPomodoro] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { user, signOut } = useAuth();
   const location = useLocation();
@@ -65,15 +62,8 @@ export const Navbar = () => {
             ))}
           </div>
 
-          {/* Theme Toggle, Pomodoro, Auth & Mobile Menu */}
+          {/* Theme Toggle, Auth & Mobile Menu */}
           <div className="flex items-center space-x-4">
-            {user && (
-              <PomodoroButton
-                onClick={() => setShowPomodoro(!showPomodoro)}
-                isActive={showPomodoro}
-              />
-            )}
-            
             <Button
               variant="ghost"
               size="sm"
@@ -169,13 +159,6 @@ export const Navbar = () => {
               ))}
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Pomodoro Widget */}
-      <AnimatePresence>
-        {showPomodoro && (
-          <PomodoroWidget onClose={() => setShowPomodoro(false)} />
         )}
       </AnimatePresence>
     </nav>

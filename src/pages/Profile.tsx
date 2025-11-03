@@ -8,11 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Upload, Calendar, BookOpen, Brain, FileText, Flame, History } from "lucide-react";
+import { Upload, Calendar, BookOpen, Brain, FileText, Flame } from "lucide-react";
 import { format } from "date-fns";
-import { PomodoroStats } from "@/components/pomodoro/PomodoroStats";
-import { PomodoroHistory } from "@/components/pomodoro/PomodoroHistory";
-import { AnimatePresence } from "framer-motion";
 
 interface ProfileData {
   display_name: string | null;
@@ -34,7 +31,6 @@ export default function Profile() {
   const [uploading, setUploading] = useState(false);
   const [flashcardsCount, setFlashcardsCount] = useState(0);
   const [summariesCount, setSummariesCount] = useState(0);
-  const [showHistory, setShowHistory] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -265,23 +261,6 @@ export default function Profile() {
           </CardContent>
         </Card>
 
-        {/* Pomodoro Stats */}
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-              <CardTitle>Pomodoro Stats</CardTitle>
-              <CardDescription>Your focus time tracking</CardDescription>
-            </div>
-            <Button variant="outline" size="sm" onClick={() => setShowHistory(true)}>
-              <History className="h-4 w-4 mr-2" />
-              History
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <PomodoroStats />
-          </CardContent>
-        </Card>
-
         {/* Stats Section */}
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <Card>
@@ -358,11 +337,6 @@ export default function Profile() {
           </CardContent>
         </Card>
       </div>
-
-      {/* Pomodoro History Modal */}
-      <AnimatePresence>
-        {showHistory && <PomodoroHistory onClose={() => setShowHistory(false)} />}
-      </AnimatePresence>
     </div>
   );
 }
