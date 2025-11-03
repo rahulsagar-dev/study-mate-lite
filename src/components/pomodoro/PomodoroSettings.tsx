@@ -115,25 +115,29 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[10000] flex items-center justify-center p-4"
+      className="fixed top-0 left-0 w-full h-full bg-background/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
       onClick={onClose}
+      style={{ margin: 0 }}
     >
       <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
+        initial={{ scale: 0.9, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.9, opacity: 0, y: 20 }}
         onClick={(e) => e.stopPropagation()}
-        className="w-[380px] max-w-[90%]"
+        className="w-full max-w-[380px] mx-auto"
+        style={{ maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}
       >
-        <Card className="flex flex-col max-h-[90vh] shadow-lg">
-          <div className="flex items-center justify-between p-6 pb-4 shrink-0">
+        <Card className="flex flex-col w-full shadow-2xl" style={{ maxHeight: '90vh' }}>
+          {/* Header */}
+          <div className="flex items-center justify-between p-6 pb-4 shrink-0 border-b">
             <h2 className="text-2xl font-bold">Pomodoro Settings</h2>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-5 w-5" />
             </Button>
           </div>
 
-          <div className="overflow-y-auto flex-1 px-6 space-y-4">
+          {/* Scrollable Content */}
+          <div className="overflow-y-auto flex-1 p-6 space-y-4">
             <div className="space-y-2">
               <Label htmlFor="work-duration">Work Duration (minutes)</Label>
               <Input
@@ -198,6 +202,7 @@ export const PomodoroSettings = ({ onClose }: PomodoroSettingsProps) => {
             </div>
           </div>
 
+          {/* Footer */}
           <div className="flex gap-2 p-6 pt-4 border-t shrink-0">
             <Button variant="outline" className="flex-1" onClick={onClose}>
               Cancel
