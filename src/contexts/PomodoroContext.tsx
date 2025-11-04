@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { PomodoroWidget } from '@/components/pomodoro/PomodoroWidget';
 import { PomodoroButton } from '@/components/pomodoro/PomodoroButton';
 import { useAuth } from './AuthContext';
@@ -33,7 +34,13 @@ export const PomodoroProvider = ({ children }: { children: ReactNode }) => {
   return (
     <PomodoroContext.Provider value={{ showWidget, openWidget, closeWidget }}>
       {children}
-      {showWidget ? <PomodoroWidget /> : <PomodoroButton onClick={openWidget} />}
+      <AnimatePresence mode="wait">
+        {showWidget ? (
+          <PomodoroWidget key="widget" />
+        ) : (
+          <PomodoroButton key="button" onClick={openWidget} />
+        )}
+      </AnimatePresence>
     </PomodoroContext.Provider>
   );
 };
