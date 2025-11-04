@@ -1,32 +1,47 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Timer, Play, Pause, RotateCcw, Settings, Minimize2, Maximize2 } from 'lucide-react';
+import { Timer, Play, Pause, RotateCcw, Settings, Minimize2, Maximize2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { usePomodoro, SessionType } from '@/hooks/usePomodoro';
 import { PomodoroSettings } from './PomodoroSettings';
 import { cn } from '@/lib/utils';
+import { usePomodoro as usePomodoroContext } from '@/contexts/PomodoroContext';
 
 const WIDGET_POSITION_KEY = 'pomodoro-widget-position';
 const WIDGET_STATE_KEY = 'pomodoro-widget-minimized';
 
+const getInitialPosition = () => {
+  const saved = localStorage.getItem(WIDGET_POSITION_KEY);
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      // Ensure position is within viewport bounds
+      const maxX = Math.max(0, window.innerWidth - 400);
+      const maxY = Math.max(0, window.innerHeight - 300);
+      return {
+        x: Math.min(Math.max(0, parsed.x), maxX),
+        y: Math.min(Math.max(0, parsed.y), maxY)
+      };
+    } catch (e) {
+      console.error('Failed to parse saved position', e);
+    }
+  }
+  // Default to centered on screen
+  return { 
+    x: Math.max(0, (window.innerWidth - 320) / 2), 
+    y: Math.max(0, (window.innerHeight - 400) / 2) 
+  };
+};
+
 export const PomodoroWidget = () => {
   const pomodoro = usePomodoro();
+  const { closeWidget } = usePomodoroContext();
   const [isMinimized, setIsMinimized] = useState(() => {
     return localStorage.getItem(WIDGET_STATE_KEY) === 'true';
   });
   const [showSettings, setShowSettings] = useState(false);
-  const [position, setPosition] = useState(() => {
-    const saved = localStorage.getItem(WIDGET_POSITION_KEY);
-    if (saved) {
-      try {
-        return JSON.parse(saved);
-      } catch (e) {
-        return { x: window.innerWidth - 400, y: 100 };
-      }
-    }
-    return { x: window.innerWidth - 400, y: 100 };
-  });
+  const [position, setPosition] = useState(getInitialPosition);
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
@@ -95,6 +110,9 @@ export const PomodoroWidget = () => {
               <Button size="sm" variant="ghost" onClick={() => setIsMinimized(false)}>
                 <Maximize2 className="w-4 h-4" />
               </Button>
+              <Button size="sm" variant="ghost" onClick={closeWidget}>
+                <X className="w-4 h-4" />
+              </Button>
             </div>
           </Card>
         </motion.div>
@@ -136,6 +154,9 @@ export const PomodoroWidget = () => {
                 </Button>
                 <Button size="sm" variant="ghost" onClick={() => setIsMinimized(true)}>
                   <Minimize2 className="w-4 h-4" />
+                </Button>
+                <Button size="sm" variant="ghost" onClick={closeWidget}>
+                  <X className="w-4 h-4" />
                 </Button>
               </div>
             </div>
