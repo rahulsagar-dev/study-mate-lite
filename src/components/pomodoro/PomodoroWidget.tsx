@@ -35,6 +35,7 @@ const getInitialPosition = () => {
 };
 
 export const PomodoroWidget = () => {
+  console.log('PomodoroWidget rendering');
   const pomodoro = usePomodoro();
   const { closeWidget } = usePomodoroContext();
   const [isMinimized, setIsMinimized] = useState(() => {
@@ -42,6 +43,8 @@ export const PomodoroWidget = () => {
   });
   const [showSettings, setShowSettings] = useState(false);
   const [position, setPosition] = useState(getInitialPosition);
+  
+  console.log('Widget state - isMinimized:', isMinimized, 'position:', position);
   const [isDragging, setIsDragging] = useState(false);
 
   useEffect(() => {
@@ -78,12 +81,13 @@ export const PomodoroWidget = () => {
   const sessionInfo = getSessionInfo(pomodoro.sessionType);
 
   if (isMinimized) {
+    console.log('Rendering minimized widget');
     return (
       <>
         <motion.div
-          initial={{ scale: 0, opacity: 0 }}
+          initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0, opacity: 0 }}
+          transition={{ duration: 0.2 }}
           drag
           dragMomentum={false}
           dragElastic={0}
@@ -92,8 +96,13 @@ export const PomodoroWidget = () => {
             setIsDragging(false);
             setPosition({ x: position.x + info.offset.x, y: position.y + info.offset.y });
           }}
-          style={{ x: position.x, y: position.y }}
-          className="fixed z-[9999] cursor-move"
+          style={{ 
+            position: 'fixed',
+            left: position.x,
+            top: position.y,
+            zIndex: 9999
+          }}
+          className="cursor-move"
         >
           <Card className="bg-card/95 backdrop-blur-sm border-2 shadow-lg p-3 flex items-center gap-3">
             <div className="flex items-center gap-2">
@@ -129,12 +138,12 @@ export const PomodoroWidget = () => {
     );
   }
 
+  console.log('Rendering full widget');
   return (
     <>
       <motion.div
-        initial={{ scale: 0.8, opacity: 0 }}
+        initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.8, opacity: 0 }}
         transition={{ duration: 0.2 }}
         drag
         dragMomentum={false}
@@ -144,8 +153,13 @@ export const PomodoroWidget = () => {
           setIsDragging(false);
           setPosition({ x: position.x + info.offset.x, y: position.y + info.offset.y });
         }}
-        style={{ x: position.x, y: position.y }}
-        className="fixed z-[9999] cursor-move"
+        style={{ 
+          position: 'fixed',
+          left: position.x,
+          top: position.y,
+          zIndex: 9999
+        }}
+        className="cursor-move"
       >
         <Card className="w-80 bg-card/95 backdrop-blur-sm border-2 shadow-2xl">
           <div className="p-4 space-y-4">

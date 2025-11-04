@@ -24,23 +24,27 @@ export const PomodoroProvider = ({ children }: { children: ReactNode }) => {
   const { user } = useAuth();
   const [showWidget, setShowWidget] = useState(false);
 
-  const openWidget = () => setShowWidget(true);
-  const closeWidget = () => setShowWidget(false);
+  const openWidget = () => {
+    console.log('Opening Pomodoro widget');
+    setShowWidget(true);
+  };
+  
+  const closeWidget = () => {
+    console.log('Closing Pomodoro widget');
+    setShowWidget(false);
+  };
 
   if (!user) {
     return <>{children}</>;
   }
 
+  console.log('PomodoroProvider render - showWidget:', showWidget);
+
   return (
     <PomodoroContext.Provider value={{ showWidget, openWidget, closeWidget }}>
       {children}
-      <AnimatePresence mode="wait">
-        {showWidget ? (
-          <PomodoroWidget key="widget" />
-        ) : (
-          <PomodoroButton key="button" onClick={openWidget} />
-        )}
-      </AnimatePresence>
+      {!showWidget && <PomodoroButton onClick={openWidget} />}
+      {showWidget && <PomodoroWidget />}
     </PomodoroContext.Provider>
   );
 };
