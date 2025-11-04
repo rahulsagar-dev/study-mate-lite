@@ -109,31 +109,6 @@ export const usePomodoro = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   }, [state]);
 
-  // Timer countdown
-  useEffect(() => {
-    if (state.isRunning && !state.isPaused) {
-      intervalRef.current = setInterval(() => {
-        setState(prev => {
-          if (prev.timeRemaining <= 1) {
-            handleSessionComplete();
-            return prev;
-          }
-          return { ...prev, timeRemaining: prev.timeRemaining - 1 };
-        });
-      }, 1000);
-    } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    }
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [state.isRunning, state.isPaused]);
-
   const playSound = useCallback(() => {
     if (state.settings.soundEnabled) {
       const audio = new Audio('/notification.mp3');
@@ -219,6 +194,36 @@ export const usePomodoro = () => {
       sessionStartRef.current = null;
     }
   }, [state, playSound, saveSessionToDatabase]);
+
+  // Timer countdown
+  useEffect(() => {
+    if (state.isRunning && !state.isPaused) {
+      intervalRef.current = setInterval(() => {
+        setState(prev => {
+          if (prev.timeRemaining <= 1) {
+            // Stop the timer and trigger session complete
+            if (intervalRef.current) {
+              clearInterval(intervalRef.current);
+            }
+            handleSessionComplete();
+            return { ...prev, timeRemaining: 0, isRunning: false };
+          }
+          return { ...prev, timeRemaining: prev.timeRemaining - 1 };
+        });
+      }, 1000);
+    } else {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [state.isRunning, state.isPaused, handleSessionComplete]);
+
 
   const start = useCallback(() => {
     sessionStartRef.current = new Date().toISOString();
