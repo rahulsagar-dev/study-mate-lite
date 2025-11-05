@@ -61,7 +61,7 @@ export const usePomodoro = () => {
   const sessionStartRef = useRef<string | null>(null);
   const currentSessionIdRef = useRef<string | null>(null);
 
-  // Load settings from database
+  // Load settings from database and subscribe to real-time updates
   useEffect(() => {
     if (!user) return;
 
@@ -86,7 +86,21 @@ export const usePomodoro = () => {
           autoStartPomodoros: (data as any).auto_start_pomodoros || false,
           soundEnabled: (data as any).sound_enabled || false,
         };
-        setState(prev => ({ ...prev, settings }));
+        setState(prev => {
+          const newTimeRemaining = prev.isRunning 
+            ? prev.timeRemaining 
+            : prev.sessionType === 'work'
+            ? settings.workDuration * 60
+            : prev.sessionType === 'short_break'
+            ? settings.shortBreakDuration * 60
+            : settings.longBreakDuration * 60;
+          
+          return { 
+            ...prev, 
+            settings,
+            timeRemaining: newTimeRemaining
+          };
+        });
       } else {
         // Create default settings
         await supabase.from('pomodoro_settings' as any).insert({
@@ -102,6 +116,52 @@ export const usePomodoro = () => {
     };
 
     loadSettings();
+
+    // Subscribe to real-time changes
+    const channel = supabase
+      .channel('pomodoro-settings-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'pomodoro_settings',
+          filter: `user_id=eq.${user.id}`
+        },
+        (payload) => {
+          console.log('Settings updated in real-time:', payload);
+          const data = payload.new as any;
+          const settings: PomodoroSettings = {
+            workDuration: data.work_duration,
+            shortBreakDuration: data.short_break_duration,
+            longBreakDuration: data.long_break_duration,
+            autoStartBreaks: data.auto_start_breaks || false,
+            autoStartPomodoros: data.auto_start_pomodoros || false,
+            soundEnabled: data.sound_enabled || false,
+          };
+          setState(prev => {
+            // Only update time remaining if timer is not running
+            const newTimeRemaining = prev.isRunning 
+              ? prev.timeRemaining 
+              : prev.sessionType === 'work'
+              ? settings.workDuration * 60
+              : prev.sessionType === 'short_break'
+              ? settings.shortBreakDuration * 60
+              : settings.longBreakDuration * 60;
+            
+            return { 
+              ...prev, 
+              settings,
+              timeRemaining: newTimeRemaining
+            };
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, [user]);
 
   // Save state to localStorage
@@ -267,20 +327,13 @@ export const usePomodoro = () => {
           auto_start_breaks: updated.autoStartBreaks,
           auto_start_pomodoros: updated.autoStartPomodoros,
           sound_enabled: updated.soundEnabled,
+        }, {
+          onConflict: 'user_id'
         });
 
       if (error) throw error;
 
-      setState(prev => ({
-        ...prev,
-        settings: updated,
-        timeRemaining: prev.sessionType === 'work' 
-          ? updated.workDuration * 60 
-          : prev.sessionType === 'short_break'
-          ? updated.shortBreakDuration * 60
-          : updated.longBreakDuration * 60,
-      }));
-
+      // Real-time subscription will handle the state update
       toast.success('Settings saved!');
     } catch (error) {
       console.error('Error updating settings:', error);
