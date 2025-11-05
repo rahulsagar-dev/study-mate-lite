@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Timer, Play, Pause, RotateCcw, Settings, Minimize2, Maximize2, X } from 'lucide-react';
+import { Timer, Play, Pause, RotateCcw, Settings, Minimize2, Maximize2, X, SkipForward } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { usePomodoro, SessionType } from '@/hooks/usePomodoro';
@@ -246,6 +246,18 @@ export const PomodoroWidget = () => {
                 <Button size="lg" onClick={pomodoro.pause} variant="secondary" className="gap-2">
                   <Pause className="w-4 h-4" />
                   Pause
+                </Button>
+              )}
+              {pomodoro.isRunning && (
+                <Button 
+                  size="lg" 
+                  variant="ghost"
+                  onClick={pomodoro.skip}
+                  className="gap-2"
+                  title="Skip session (won't count towards stats)"
+                >
+                  <SkipForward className="w-4 h-4" />
+                  Skip
                 </Button>
               )}
               <Button size="lg" onClick={pomodoro.reset} variant="outline" className="gap-2">

@@ -311,6 +311,53 @@ export const usePomodoro = () => {
     }));
   }, []);
 
+  const skip = useCallback(() => {
+    console.log('Skipping session');
+    
+    const currentType = state.sessionType;
+    let nextType: SessionType;
+    let nextCycle = state.currentCycle;
+    let shouldAutoStart = false;
+
+    if (currentType === 'work') {
+      nextCycle += 1;
+      if (nextCycle % 4 === 0) {
+        nextType = 'long_break';
+        shouldAutoStart = state.settings.autoStartBreaks;
+      } else {
+        nextType = 'short_break';
+        shouldAutoStart = state.settings.autoStartBreaks;
+      }
+    } else {
+      nextType = 'work';
+      shouldAutoStart = state.settings.autoStartPomodoros;
+    }
+
+    const nextDuration = nextType === 'work' 
+      ? state.settings.workDuration 
+      : nextType === 'short_break'
+      ? state.settings.shortBreakDuration
+      : state.settings.longBreakDuration;
+
+    sessionStartRef.current = null;
+    currentSessionIdRef.current = null;
+
+    setState(prev => ({
+      ...prev,
+      sessionType: nextType,
+      currentCycle: nextCycle,
+      timeRemaining: nextDuration * 60,
+      isRunning: shouldAutoStart,
+      isPaused: false,
+    }));
+
+    if (shouldAutoStart) {
+      sessionStartRef.current = new Date().toISOString();
+    }
+
+    toast.info('⏭️ Session skipped');
+  }, [state]);
+
   const updateSettings = useCallback(async (newSettings: Partial<PomodoroSettings>) => {
     if (!user) return;
 
@@ -347,6 +394,7 @@ export const usePomodoro = () => {
     pause,
     resume,
     reset,
+    skip,
     updateSettings,
   };
 };
