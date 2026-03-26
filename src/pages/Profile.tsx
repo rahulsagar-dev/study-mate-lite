@@ -15,10 +15,10 @@ interface ProfileData {
   display_name: string | null;
   email: string | null;
   avatar_url: string | null;
-  total_study_hours: number;
-  study_streak: number;
+  study_hours: number;
+  streak: number;
   favorite_subjects: string[];
-  joined_date: string;
+  created_at: string;
   total_pomodoro_sessions: number;
   total_focus_hours: number;
 }
