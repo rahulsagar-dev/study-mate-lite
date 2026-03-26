@@ -77,7 +77,7 @@ export const useTodos = () => {
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<Todo> }) => {
       const { data, error } = await supabase
         .from('todos')
-        .update(updates )
+        .update(updates as any)
         .eq('id', id)
         .select()
         .single();
