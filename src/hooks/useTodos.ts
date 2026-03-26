@@ -3,23 +3,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
 
-// Temporary type until migration is run
-type SupabaseTodo = {
-  id: string;
-  user_id: string;
-  title: string;
-  description?: string;
-  priority: PriorityLevel;
-  due_date?: string;
-  completed: boolean;
-  completed_at?: string;
-  subject?: string;
-  linked_session_id?: string;
-  position: number;
-  created_at: string;
-  updated_at: string;
-};
-
 export type PriorityLevel = 'high' | 'medium' | 'low';
 
 export interface Todo {
