@@ -48,7 +48,7 @@ export const useTodos = () => {
       if (!user?.id) return [];
       
       const { data, error } = await supabase
-        .from('todos' as any)
+        .from('todos')
         .select('*')
         .eq('user_id', user.id)
         .order('position', { ascending: true });
@@ -64,11 +64,11 @@ export const useTodos = () => {
       if (!user?.id) throw new Error('User not authenticated');
 
       const { data, error } = await supabase
-        .from('todos' as any)
+        .from('todos')
         .insert({
           ...todo,
           user_id: user.id,
-        } as any)
+        } )
         .select()
         .single();
 
@@ -91,8 +91,8 @@ export const useTodos = () => {
   const updateTodo = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<Todo> }) => {
       const { data, error } = await supabase
-        .from('todos' as any)
-        .update(updates as any)
+        .from('todos')
+        .update(updates )
         .eq('id', id)
         .select()
         .single();
@@ -115,7 +115,7 @@ export const useTodos = () => {
   const deleteTodo = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase
-        .from('todos' as any)
+        .from('todos')
         .delete()
         .eq('id', id);
 
@@ -140,11 +140,11 @@ export const useTodos = () => {
       if (!todo) throw new Error('Todo not found');
 
       const { data, error } = await supabase
-        .from('todos' as any)
+        .from('todos')
         .update({
           completed: !todo.completed,
           completed_at: !todo.completed ? new Date().toISOString() : null,
-        } as any)
+        } )
         .eq('id', id)
         .select()
         .single();
@@ -165,7 +165,7 @@ export const useTodos = () => {
       }));
 
       const { error } = await supabase
-        .from('todos' as any)
+        .from('todos')
         .upsert(updates as any);
 
       if (error) throw error;
