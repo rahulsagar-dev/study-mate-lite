@@ -14,7 +14,356 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ai_error_logs: {
+        Row: {
+          created_at: string
+          error_message: string
+          function_name: string | null
+          id: string
+          input_text: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          error_message: string
+          function_name?: string | null
+          id?: string
+          input_text?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string
+          function_name?: string | null
+          id?: string
+          input_text?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          created_at: string
+          extracted_text: string | null
+          file_path: string
+          file_size: number | null
+          file_type: string | null
+          filename: string
+          id: string
+          status: string | null
+          text_length: number | null
+          user_id: string
+          word_count: number | null
+        }
+        Insert: {
+          created_at?: string
+          extracted_text?: string | null
+          file_path: string
+          file_size?: number | null
+          file_type?: string | null
+          filename: string
+          id?: string
+          status?: string | null
+          text_length?: number | null
+          user_id: string
+          word_count?: number | null
+        }
+        Update: {
+          created_at?: string
+          extracted_text?: string | null
+          file_path?: string
+          file_size?: number | null
+          file_type?: string | null
+          filename?: string
+          id?: string
+          status?: string | null
+          text_length?: number | null
+          user_id?: string
+          word_count?: number | null
+        }
+        Relationships: []
+      }
+      flashcard_sets: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      flashcards: {
+        Row: {
+          back_text: string
+          created_at: string
+          front_text: string
+          id: string
+          position: number
+          set_id: string
+        }
+        Insert: {
+          back_text: string
+          created_at?: string
+          front_text: string
+          id?: string
+          position?: number
+          set_id: string
+        }
+        Update: {
+          back_text?: string
+          created_at?: string
+          front_text?: string
+          id?: string
+          position?: number
+          set_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "flashcards_set_id_fkey"
+            columns: ["set_id"]
+            isOneToOne: false
+            referencedRelation: "flashcard_sets"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      generation_history: {
+        Row: {
+          card_count: number
+          created_at: string
+          id: string
+          input_text: string | null
+          output_data: Json | null
+          source_filename: string | null
+          source_type: string
+          user_id: string
+        }
+        Insert: {
+          card_count?: number
+          created_at?: string
+          id?: string
+          input_text?: string | null
+          output_data?: Json | null
+          source_filename?: string | null
+          source_type?: string
+          user_id: string
+        }
+        Update: {
+          card_count?: number
+          created_at?: string
+          id?: string
+          input_text?: string | null
+          output_data?: Json | null
+          source_filename?: string | null
+          source_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pomodoro_sessions: {
+        Row: {
+          completed_at: string
+          created_at: string
+          duration: number
+          id: string
+          session_type: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          duration: number
+          id?: string
+          session_type: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          duration?: number
+          id?: string
+          session_type?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pomodoro_settings: {
+        Row: {
+          auto_start_breaks: boolean
+          auto_start_pomodoro: boolean
+          created_at: string
+          id: string
+          long_break_duration: number
+          short_break_duration: number
+          sound_enabled: boolean
+          updated_at: string
+          user_id: string
+          work_duration: number
+        }
+        Insert: {
+          auto_start_breaks?: boolean
+          auto_start_pomodoro?: boolean
+          created_at?: string
+          id?: string
+          long_break_duration?: number
+          short_break_duration?: number
+          sound_enabled?: boolean
+          updated_at?: string
+          user_id: string
+          work_duration?: number
+        }
+        Update: {
+          auto_start_breaks?: boolean
+          auto_start_pomodoro?: boolean
+          created_at?: string
+          id?: string
+          long_break_duration?: number
+          short_break_duration?: number
+          sound_enabled?: boolean
+          updated_at?: string
+          user_id?: string
+          work_duration?: number
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          display_name: string | null
+          email: string | null
+          favorite_subjects: string[] | null
+          id: string
+          streak: number | null
+          study_hours: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          favorite_subjects?: string[] | null
+          id?: string
+          streak?: number | null
+          study_hours?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          favorite_subjects?: string[] | null
+          id?: string
+          streak?: number | null
+          study_hours?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      summaries: {
+        Row: {
+          compression_ratio: number | null
+          created_at: string
+          id: string
+          original_text: string
+          summary_text: string
+          summary_type: string
+          title: string
+          user_id: string
+          word_count: number | null
+        }
+        Insert: {
+          compression_ratio?: number | null
+          created_at?: string
+          id?: string
+          original_text: string
+          summary_text: string
+          summary_type?: string
+          title: string
+          user_id: string
+          word_count?: number | null
+        }
+        Update: {
+          compression_ratio?: number | null
+          created_at?: string
+          id?: string
+          original_text?: string
+          summary_text?: string
+          summary_type?: string
+          title?: string
+          user_id?: string
+          word_count?: number | null
+        }
+        Relationships: []
+      }
+      todos: {
+        Row: {
+          completed: boolean
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          linked_session_id: string | null
+          position: number
+          priority: Database["public"]["Enums"]["priority_level"]
+          subject: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          linked_session_id?: string | null
+          position?: number
+          priority?: Database["public"]["Enums"]["priority_level"]
+          subject?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed?: boolean
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          linked_session_id?: string | null
+          position?: number
+          priority?: Database["public"]["Enums"]["priority_level"]
+          subject?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +372,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      priority_level: "high" | "medium" | "low"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +499,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      priority_level: ["high", "medium", "low"],
+    },
   },
 } as const

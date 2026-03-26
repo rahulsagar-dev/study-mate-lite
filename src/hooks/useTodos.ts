@@ -3,23 +3,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from '@/hooks/use-toast';
 
-// Temporary type until migration is run
-type SupabaseTodo = {
-  id: string;
-  user_id: string;
-  title: string;
-  description?: string;
-  priority: PriorityLevel;
-  due_date?: string;
-  completed: boolean;
-  completed_at?: string;
-  subject?: string;
-  linked_session_id?: string;
-  position: number;
-  created_at: string;
-  updated_at: string;
-};
-
 export type PriorityLevel = 'high' | 'medium' | 'low';
 
 export interface Todo {
@@ -48,7 +31,7 @@ export const useTodos = () => {
       if (!user?.id) return [];
       
       const { data, error } = await supabase
-        .from('todos' as any)
+        .from('todos')
         .select('*')
         .eq('user_id', user.id)
         .order('position', { ascending: true });
@@ -63,12 +46,14 @@ export const useTodos = () => {
     mutationFn: async (todo: Partial<Todo>) => {
       if (!user?.id) throw new Error('User not authenticated');
 
+      const insertData: Record<string, unknown> = {
+        ...todo,
+        user_id: user.id,
+      };
+
       const { data, error } = await supabase
-        .from('todos' as any)
-        .insert({
-          ...todo,
-          user_id: user.id,
-        } as any)
+        .from('todos')
+        .insert(insertData as any)
         .select()
         .single();
 
@@ -91,7 +76,7 @@ export const useTodos = () => {
   const updateTodo = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: Partial<Todo> }) => {
       const { data, error } = await supabase
-        .from('todos' as any)
+        .from('todos')
         .update(updates as any)
         .eq('id', id)
         .select()
@@ -115,7 +100,7 @@ export const useTodos = () => {
   const deleteTodo = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await supabase
-        .from('todos' as any)
+        .from('todos')
         .delete()
         .eq('id', id);
 
@@ -140,11 +125,11 @@ export const useTodos = () => {
       if (!todo) throw new Error('Todo not found');
 
       const { data, error } = await supabase
-        .from('todos' as any)
+        .from('todos')
         .update({
           completed: !todo.completed,
           completed_at: !todo.completed ? new Date().toISOString() : null,
-        } as any)
+        } )
         .eq('id', id)
         .select()
         .single();
@@ -165,7 +150,7 @@ export const useTodos = () => {
       }));
 
       const { error } = await supabase
-        .from('todos' as any)
+        .from('todos')
         .upsert(updates as any);
 
       if (error) throw error;

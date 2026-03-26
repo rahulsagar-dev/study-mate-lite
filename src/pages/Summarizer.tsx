@@ -98,15 +98,14 @@ export default function Summarizer() {
       // Save document metadata
       await supabase.from('documents').insert({
         user_id: user.id,
-        file_name: file.name,
-        file_url: filePath,
+        filename: file.name,
+        file_path: filePath,
         file_type: fileExtension.replace('.', ''),
         file_size: file.size,
         extracted_text: parseData.text,
         text_length: parseData.textLength,
         word_count: parseData.wordCount,
-        parsed_at: new Date().toISOString(),
-        processing_status: 'success'
+        status: 'success'
       });
 
       toast({

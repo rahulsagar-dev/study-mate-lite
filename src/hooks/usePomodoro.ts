@@ -57,7 +57,7 @@ export const usePomodoro = () => {
     };
   });
 
-  const intervalRef = useRef<NodeJS.Timeout>();
+  const intervalRef = useRef<ReturnType<typeof setInterval>>();
   const sessionStartRef = useRef<string | null>(null);
   const currentSessionIdRef = useRef<string | null>(null);
 

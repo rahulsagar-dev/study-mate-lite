@@ -15,10 +15,10 @@ interface ProfileData {
   display_name: string | null;
   email: string | null;
   avatar_url: string | null;
-  total_study_hours: number;
-  study_streak: number;
+  study_hours: number;
+  streak: number;
   favorite_subjects: string[];
-  joined_date: string;
+  created_at: string;
   total_pomodoro_sessions: number;
   total_focus_hours: number;
 }
@@ -257,7 +257,7 @@ export default function Profile() {
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   <Calendar className="h-4 w-4" />
                   <span>
-                    Member since {profile.joined_date ? format(new Date(profile.joined_date), "MMMM yyyy") : "Unknown"}
+                    Member since {profile.created_at ? format(new Date(profile.created_at), "MMMM yyyy") : "Unknown"}
                   </span>
                 </div>
               </div>
@@ -295,7 +295,7 @@ export default function Profile() {
               <BookOpen className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{profile.total_study_hours || 0}h</div>
+              <div className="text-2xl font-bold">{profile.study_hours || 0}h</div>
               <p className="text-xs text-muted-foreground">Total time studied</p>
             </CardContent>
           </Card>
@@ -306,7 +306,7 @@ export default function Profile() {
               <Flame className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{profile.study_streak || 0}</div>
+              <div className="text-2xl font-bold">{profile.streak || 0}</div>
               <p className="text-xs text-muted-foreground">Days in a row</p>
             </CardContent>
           </Card>
