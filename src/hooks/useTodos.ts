@@ -46,12 +46,14 @@ export const useTodos = () => {
     mutationFn: async (todo: Partial<Todo>) => {
       if (!user?.id) throw new Error('User not authenticated');
 
+      const insertData: Record<string, unknown> = {
+        ...todo,
+        user_id: user.id,
+      };
+
       const { data, error } = await supabase
         .from('todos')
-        .insert({
-          ...todo,
-          user_id: user.id,
-        } )
+        .insert(insertData as any)
         .select()
         .single();
 
