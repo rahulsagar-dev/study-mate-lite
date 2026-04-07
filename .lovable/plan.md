@@ -1,48 +1,20 @@
 
 
-# Database Setup Plan
+# Update README.md
 
-This project needs 10 database tables, 2 storage buckets, and a trigger to function properly. Here's the complete plan.
+Replace the current generic README with a polished, project-specific one that covers:
 
-## Tables to Create
+## Content Structure
 
-| Table | Purpose |
-|-------|---------|
-| `profiles` | User profile data (display name, avatar, study stats) |
-| `flashcard_sets` | Saved flashcard collections |
-| `flashcards` | Individual cards within sets |
-| `generation_history` | AI generation history for flashcards |
-| `summaries` | Saved text summaries |
-| `documents` | Uploaded file metadata |
-| `ai_error_logs` | Error logging for AI features |
-| `pomodoro_settings` | Per-user timer configuration |
-| `pomodoro_sessions` | Completed pomodoro session records |
-| `todos` | To-do list tasks with priority and ordering |
+1. **Project Title & Badge Area** — "StudyMate Lite" with a tagline
+2. **About** — Short paragraph describing the app (AI-powered study companion)
+3. **Features** — Bullet list of core features: Summarizer, Flashcards, Scheduler, Pomodoro Timer, To-Do List, Auth, Profile/Stats, Dark/Light Theme
+4. **Tech Stack** — React 18, TypeScript, Vite, Tailwind CSS, shadcn/ui, Framer Motion, Lovable Cloud (backend)
+5. **Screenshots** — Placeholder section for adding screenshots later
+6. **Getting Started** — Clone, install, run instructions
+7. **Project Structure** — Brief folder overview (pages, components, hooks, contexts, edge functions)
+8. **License** — MIT or as preferred
 
-## Storage Buckets
-
-- **avatars** — Profile pictures (public access)
-- **documents** — Uploaded study files (authenticated access)
-
-## Trigger
-
-- **Auto-create profile** — When a new user signs up, automatically insert a row in `profiles` so the profile page works immediately.
-
-## RLS Policies
-
-Every table gets Row-Level Security with policies ensuring users can only read/write their own data. Realtime is enabled on `pomodoro_settings` for live settings sync.
-
-## After Migration
-
-- Update the hook files to remove `as any` casts since the generated types will now include all tables
-- The build errors will be resolved once types auto-regenerate
-
-## Technical Details
-
-Single migration with all tables, indexes, triggers, and RLS policies. Key design decisions:
-- `profiles.user_id` references `auth.users(id)` with CASCADE delete
-- `flashcards.set_id` references `flashcard_sets(id)` with CASCADE delete (deleting a set removes its cards)
-- `pomodoro_settings` has a UNIQUE constraint on `user_id` for upsert support
-- `todos` uses a `priority_level` enum (high/medium/low)
-- Profile trigger uses `SECURITY DEFINER` to bypass RLS during signup
+## File Changed
+- `README.md` — Full rewrite
 
