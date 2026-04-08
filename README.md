@@ -39,7 +39,8 @@
 
 ## 📸 Screenshots
 
-> _Coming soon — add screenshots of the Summarizer, Flashcards, Scheduler, and Pomodoro pages here._
+> <img width="1918" height="870" alt="Screenshot 2026-04-08 094403" src="https://github.com/user-attachments/assets/8b16386a-6a20-4424-a3ed-33d45cf5c629" />
+
 
 ---
 
